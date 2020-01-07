@@ -31,19 +31,15 @@
 extern "C" {
 #endif
 
-/** a byte. */
-typedef uint8_t byte;
+typedef uint8_t byte;       /**< byte type, 8 bits, unsigned. */
 
-/** float types. */
-typedef float float32_t;
-typedef double float64_t;
+typedef float float32_t;    /**< 32 bits float type */
+typedef double float64_t;   /**< 64 bits float type */
 
-/** a string pointer. */
-typedef char const *cstr_t;
+typedef char const *cstr_t; /**< const string pointer */
 
-/** a pointer. */
-typedef void *ptr_t;
-#define null NULL
+typedef void *ptr_t;        /**< pointer */
+#define null NULL           /**< null pointer constant */
 
 #ifdef __cplusplus
 } /* extern "C" */

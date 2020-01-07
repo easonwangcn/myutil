@@ -27,6 +27,10 @@
 extern "C" {
 #endif
 
+/* ----------------------------------------------------------------
+ * Number tools
+ * ------------------------------------------------------------- */
+
 /** align an integer
  * 
  * e.g. 
@@ -51,6 +55,10 @@ extern "C" {
 #define __MYUTIL_MACROS_MIN2_(a, b)  ((a) < (b) ? (a) : (b))
 /** @endcond */
 
+/* ----------------------------------------------------------------
+ * Cat
+ * ------------------------------------------------------------- */
+
 /** cat several augument together
  * 
  * e.g. `CAT(a, b, c) = abc`
@@ -61,8 +69,13 @@ extern "C" {
 #define __MYUTIL_MACROS_CAT2_(a, b) a##b
 /** @endcond */
 
+/* ----------------------------------------------------------------
+ * Arguments
+ * ------------------------------------------------------------- */
+
 /** count arguments, up to max 99 args. */
 #define ARG_COUNT(...) __MYUTIL_MACROS_ARG_COUNT(_, ##__VA_ARGS__, __MYUTIL_MACROS_ARG_COUNT_HELPER)
+
 /** @cond DO_NOT_DOCUMENT */
 #define __MYUTIL_MACROS_ARG_COUNT(...) __MYUTIL_MACROS_ARG_COUNT_(__VA_ARGS__)
 #define __MYUTIL_MACROS_ARG_COUNT_(\
@@ -97,6 +110,7 @@ extern "C" {
  * Usually `func` is another macro.
  */
 #define ARG_LIST(func, ...) ARG_LIST1(__MYUTIL_MACROS_ARG_LIST_FUNC, func, __VA_ARGS__)
+
 /** @cond DO_NOT_DOCUMENT */
 #define __MYUTIL_MACROS_ARG_LIST_FUNC(func, arg) func(arg)
 /** @endcond */
@@ -109,6 +123,7 @@ extern "C" {
  * Usually func is another macro.
  */
 #define ARG_LIST1(func, arg0, ...) __MYUTIL_MACROS_ARG_LIST1_(func, arg0, __VA_ARGS__)
+
 /** @cond DO_NOT_DOCUMENT */
 #define __MYUTIL_MACROS_ARG_LIST1_(func, arg0, ...) __MYUTIL_MACROS_CAT2(__MYUTIL_MACROS_ARG_LIST, ARG_COUNT(__VA_ARGS__))(func, arg0, __VA_ARGS__)
 #define __MYUTIL_MACROS_ARG_LIST0(func)
@@ -220,6 +235,7 @@ extern "C" {
  * Usually `func` is another macro.
  */
 #define ARG_RECUR(func, ...) __MYUTIL_MACROS_ARG_RECUR_(func, __VA_ARGS__)
+
 /** @cond DO_NOT_DOCUMENT */
 #define __MYUTIL_MACROS_ARG_RECUR_(func, ...) __MYUTIL_MACROS_CAT2(__MYUTIL_MACROS_ARG_RECUR, ARG_COUNT(__VA_ARGS__))(func, __VA_ARGS__)
 #define __MYUTIL_MACROS_ARG_RECUR0(func)

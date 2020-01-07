@@ -26,8 +26,11 @@
 #include "myutil/types.h"
 #include "myutil/macros.h"
 
-#include "myutil/log.h"
 #include "myutil/test.h"
+
+#include "myutil/log.h"
+#include "myutil/allocator.h"
+
 
 #ifdef __cplusplus
 extern "C" {

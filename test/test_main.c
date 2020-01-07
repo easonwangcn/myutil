@@ -1,3 +1,6 @@
 #include "myutil.h"
 
-TEST_MAIN(types, macros);
+TEST_MAIN(types, macros)
+{
+
+}

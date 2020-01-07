@@ -44,7 +44,7 @@ extern "C" {
  * TEST_MAIN(suite0, suite1, ...);
  * ```
  */
-#define TEST_MAIN(...)  __MYUTIL_TEST_DECL(__VA_ARGS__); __MYUTIL_TEST_MAIN(__VA_ARGS__);
+#define TEST_MAIN(...)  __MYUTIL_TEST_DECL(__VA_ARGS__); __MYUTIL_TEST_MAIN(__VA_ARGS__)
 
 /** test case entry */
 #define TEST_CASE(test_case) static void __MYUTIL_TEST_CASE_ENTRY_IMPL_NAME(test_case)(void); \
@@ -65,7 +65,7 @@ extern "C" {
     static void __MYUTIL_TEST_SUITE_ENTRY_IMPL_NAME(suite)(void)
 
 /** run test cases */
-#define TEST_RUN(...) ARG_LIST(__MYUTIL_TEST_RUN_, __VA_ARGS__)
+#define TEST_RUN(...) ARG_LIST(__MYUTIL_TEST_RUN, __VA_ARGS__)
 
 /** start a new test cases
  * 
@@ -76,10 +76,13 @@ extern "C" {
 void test_case_start(cstr_t name);
 
 /** return current test case name. */
-cstr_t test_case_current();
+cstr_t test_case_current(void);
 
-/** print summary when test case done.*/
-void test_case_done();
+/** print summary when test case done.
+ * 
+ * @return failed assertion count.
+ */
+int test_case_done(void);
 
 /** start a new test suite
  * 
@@ -89,34 +92,43 @@ void test_case_done();
  */
 void test_suite_start(cstr_t name);
 
-/** return current test suite name. */
-cstr_t test_suite_current();
+/** return current test suite name.
+ * 
+ * @return failed test case count.
+ */
+cstr_t test_suite_current(void);
 
 /** print summary when test suite done.*/
-void test_suite_done();
+int test_suite_done(void);
 
-/** print summary when test done.*/
-void test_done();
+/** print summary when test done.
+ * 
+ * @return failed test suite count.
+ */
+int test_done(void);
 
 /** @cond DO_NOT_DOCUMENT */
 #define __MYUTIL_TEST_CASE_ENTRY_NAME(test_case) __myutil_test_##test_case##_entry
 #define __MYUTIL_TEST_CASE_ENTRY_IMPL_NAME(test_case) __myutil_test_##test_case##_entry_impl
 #define __MYUTIL_TEST_SUITE_ENTRY_NAME(suite) __myutil_test_##suite##_entry
 #define __MYUTIL_TEST_SUITE_ENTRY_IMPL_NAME(suite) __myutil_test_##suite##_entry_impl
-#define __MYUTIL_TEST_RUN_(test_case) __MYUTIL_TEST_CASE_ENTRY_NAME(test_case)();
+#define __MYUTIL_TEST_RUN(test_case) __MYUTIL_TEST_CASE_ENTRY_NAME(test_case)();
 
 #define __MYUTIL_TEST_DECL(...) ARG_LIST(__MYUTIL_TEST_DECL_, __VA_ARGS__)
 #define __MYUTIL_TEST_DECL_(suite) void __MYUTIL_TEST_SUITE_ENTRY_NAME(suite)(void);
 #define __MYUTIL_TEST_MAIN(...) int __myutil_test_main() { \
         __MYUTIL_TEST_MAIN_RUN_SUITE(__VA_ARGS__)\
-        test_done(); \
-        return 0; \
+        return test_done(); \
     } \
+    void __myutil_test_pre_main(void); \
     int main(void) { \
+        __myutil_test_pre_main(); \
         return __myutil_test_main(); \
-    }
+    } \
+    void __myutil_test_pre_main(void)
 
 #define __MYUTIL_TEST_MAIN_RUN_SUITE(...) ARG_LIST(__MYUTIL_TEST_MAIN_RUN_SUITE_, __VA_ARGS__)
+
 #define __MYUTIL_TEST_MAIN_RUN_SUITE_(suite) __MYUTIL_TEST_SUITE_ENTRY_NAME(suite)();
 /** @endcond */
 

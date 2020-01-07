@@ -61,16 +61,16 @@ void test_case_start(cstr_t name)
 }
 
 /** return current test case name. */
-cstr_t test_case_current()
+cstr_t test_case_current(void)
 {
     return __case_name;
 }
 
 /** print summary when test case done.*/
-void test_case_done()
+int test_case_done(void)
 {
     if (__case_name == NULL)
-        return;
+        return 0;
 
     __assertion_count += __assertion_in_case_count;
     __assertion_failed_count += __assertion_failed_in_case_count;
@@ -84,6 +84,8 @@ void test_case_done()
     else
         LOGI("  PASS (total %ld assertions)",
             __assertion_in_case_count);
+
+    return __assertion_failed_in_case_count;
 }
 
 /** start a new test suite
@@ -104,22 +106,22 @@ void test_suite_start(cstr_t name)
     {
         LOGI("");
         LOGI("================================");
-        LOGI("Starting test suite \"%s\"...", name);
+        LOGI("Test suite \"%s\"", name);
         LOGI("--------------------------------");
     }
 }
 
 /** return current test suite name. */
-cstr_t test_suite_current()
+cstr_t test_suite_current(void)
 {
     return __suite_name;
 }
 
 /** print summary when test suite done.*/
-void test_suite_done()
+int test_suite_done(void)
 {
     if (__suite_name == NULL)
-        return;
+        return 0;
 
     __case_count += __case_in_suite_count;
     __case_failed_count += __case_failed_in_suite_count;
@@ -137,6 +139,8 @@ void test_suite_done()
     {
         LOGI("PASS (total %ld test cases)", __case_in_suite_count);
     }
+
+    return __case_failed_in_suite_count;
 }
 
 #define __MYUTIL_TEST_DONE(level) \
@@ -148,7 +152,7 @@ void test_suite_done()
     }
 
 /** print summary when test done.*/
-void test_done()
+int test_done(void)
 {
     LOGI("");
     LOGI("================================");
@@ -158,6 +162,8 @@ void test_done()
     __MYUTIL_TEST_DONE(case);
     __MYUTIL_TEST_DONE(suite);
     LOGI("");
+
+    return __suite_failed_count;
 }
 
 /* Compare 2 string, same as strcmp

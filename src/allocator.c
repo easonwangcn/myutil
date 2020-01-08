@@ -23,7 +23,6 @@
 #include "myutil.h"
 
 static void *__myutil_allocator_StaticAllocator_alloc(Allocator *self, size_t size);
-static void *__myutil_allocator_StaticAllocator_free(Allocator *self, void *p);
 static size_t __myutil_allocator_StaticAllocator_capacity(Allocator *self);
 static size_t __myutil_allocator_StaticAllocator_available(Allocator *self);
 
@@ -79,21 +78,32 @@ Allocator *StaticAllocator(size_t size, void *buf)
 
 static void *__myutil_allocator_StaticAllocator_alloc(Allocator *self, size_t size)
 {
-    return NULL;
-}
+    StaticAllocatorClass *self_ = DOWN_CAST(self, StaticAllocatorClass);
+    
+    // printf("alloc %d @ %p(%d, %d)\n", size, _self, _self->capacity, _self->used);
+    
+    /* 4 bytes align. */
+    size = (size + 3) >> 2 << 2;
 
-static void *__myutil_allocator_StaticAllocator_free(Allocator *self, void *p)
-{
-    return p;
+    /* allocate failed. */
+    if (self_->used + size > self_->capacity)
+        return NULL;
+    
+    /* allocate */
+    void *ptr = ((uint8_t *)self_) + self_->used;
+    self_->used += size;
+    return ptr;
 }
 
 static size_t __myutil_allocator_StaticAllocator_capacity(Allocator *self)
 {
-    return 0;
+    StaticAllocatorClass *self_ = DOWN_CAST(self, StaticAllocatorClass);
+    return self_->capacity;
 }
 
 static size_t __myutil_allocator_StaticAllocator_available(Allocator *self)
 {
-    return 0;
+    StaticAllocatorClass *self_ = DOWN_CAST(self, StaticAllocatorClass);
+    return self_->capacity - self_->used;
 }
 

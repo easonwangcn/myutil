@@ -31,6 +31,10 @@
 extern "C" {
 #endif
 
+/* ----------------------------------------------------------------
+ * Types
+ * ------------------------------------------------------------- */
+
 typedef uint8_t byte;       /**< byte type, 8 bits, unsigned. */
 
 typedef float float32_t;    /**< 32 bits float type */
@@ -40,6 +44,16 @@ typedef char const *cstr_t; /**< const string pointer */
 
 typedef void *ptr_t;        /**< pointer */
 #define null NULL           /**< null pointer constant */
+
+/* ----------------------------------------------------------------
+ * Class
+ * ------------------------------------------------------------- */
+
+/** down cast object from super */
+#define DOWN_CAST(obj, type) DOWN_CAST_FROM(obj, type, super)
+
+/** down cast object from super type */
+#define DOWN_CAST_FROM(obj, type, field) ((type *)((uint8_t *)obj - (size_t)&(((type *)0)->field)))
 
 #ifdef __cplusplus
 } /* extern "C" */

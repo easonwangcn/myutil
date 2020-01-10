@@ -10,11 +10,10 @@ Welcome to myutil's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   api/library_root
 
-
-Indices and tables
-==================
+Indices
+-------
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

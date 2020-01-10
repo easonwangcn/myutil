@@ -31,7 +31,6 @@
 #include "myutil/log.h"
 #include "myutil/allocator.h"
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif

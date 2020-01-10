@@ -14,8 +14,8 @@ project(myutil)
 #     )
 
 configure_file(
-    "${PROJECT_SOURCE_DIR}/docs/conf.py.in"
-    "${PROJECT_SOURCE_DIR}/docs/conf.py"
+    "${CMAKE_CURRENT_SOURCE_DIR}/docs/conf.py.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/docs/conf.py"
     )
 
 # ------------------------------------------------------------------------
@@ -36,7 +36,7 @@ aux_source_directory(test TEST_SOURCE_LIST)
 add_executable(${PROJECT_NAME}_test ${TEST_SOURCE_LIST})
 add_dependencies(${PROJECT_NAME}_test ${PROJECT_NAME})
 
-target_compile_options(${PROJECT_NAME}_test PRIVATE -save-temps)
+# target_compile_options(${PROJECT_NAME}_test PRIVATE -save-temps)
 target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}_test PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/inc

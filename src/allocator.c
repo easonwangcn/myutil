@@ -61,7 +61,7 @@ typedef struct _StaticAllocatorBlock
 Allocator *StaticAllocator(size_t size, void *buf)
 {
    /* Too small buffer. */
-    if (size <= sizeof(StaticAllocator))
+    if (size <= sizeof(StaticAllocatorClass))
         return NULL;
 
     /* Initial object in the beginning of the buffer. */

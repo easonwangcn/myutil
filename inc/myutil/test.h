@@ -44,7 +44,10 @@ extern "C" {
  * TEST_MAIN(suite0, suite1, ...);
  * ```
  */
-#define TEST_MAIN(...)  __MYUTIL_TEST_DECL(__VA_ARGS__); __MYUTIL_TEST_MAIN(__VA_ARGS__)
+#define TEST_MAIN(...)  TEST_IMPORT(__VA_ARGS__); __MYUTIL_TEST_MAIN(__VA_ARGS__)
+
+#define TEST_IMPORT(...)  __MYUTIL_TEST_DECL(__VA_ARGS__); __MYUTIL_TEST_RUN_DECL(__VA_ARGS__);
+#define TEST_RUN() __myutil_test_run()
 
 /** test case entry */
 #define TEST_CASE(test_case) static void __MYUTIL_TEST_CASE_ENTRY_IMPL_NAME(test_case)(void); \
@@ -65,7 +68,7 @@ extern "C" {
     static void __MYUTIL_TEST_SUITE_ENTRY_IMPL_NAME(suite)(void)
 
 /** run test cases */
-#define TEST_RUN(...) ARG_LIST(__MYUTIL_TEST_RUN, __VA_ARGS__)
+#define TEST_RUN_CASE(...) ARG_LIST(__MYUTIL_TEST_RUN_CASE, __VA_ARGS__)
 
 /** start a new test cases
  * 
@@ -112,18 +115,20 @@ int test_done(void);
 #define __MYUTIL_TEST_CASE_ENTRY_IMPL_NAME(test_case) __myutil_test_##test_case##_entry_impl
 #define __MYUTIL_TEST_SUITE_ENTRY_NAME(suite) __myutil_test_##suite##_entry
 #define __MYUTIL_TEST_SUITE_ENTRY_IMPL_NAME(suite) __myutil_test_##suite##_entry_impl
-#define __MYUTIL_TEST_RUN(test_case) __MYUTIL_TEST_CASE_ENTRY_NAME(test_case)();
+#define __MYUTIL_TEST_RUN_CASE(test_case) __MYUTIL_TEST_CASE_ENTRY_NAME(test_case)();
 
 #define __MYUTIL_TEST_DECL(...) ARG_LIST(__MYUTIL_TEST_DECL_, __VA_ARGS__)
 #define __MYUTIL_TEST_DECL_(suite) void __MYUTIL_TEST_SUITE_ENTRY_NAME(suite)(void);
-#define __MYUTIL_TEST_MAIN(...) int __myutil_test_main() { \
+#define __MYUTIL_TEST_RUN_DECL(...) int __myutil_test_run() { \
         __MYUTIL_TEST_MAIN_RUN_SUITE(__VA_ARGS__)\
         return test_done(); \
-    } \
+    }
+
+#define __MYUTIL_TEST_MAIN(...) \
     void __myutil_test_pre_main(void); \
     int main(void) { \
         __myutil_test_pre_main(); \
-        return __myutil_test_main(); \
+        return __myutil_test_run(); \
     } \
     void __myutil_test_pre_main(void)
 

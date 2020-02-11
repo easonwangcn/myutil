@@ -2,11 +2,7 @@
 Import('env')
 env = env.Clone()
 
-cflags = '--cpu Cortex-M4.fp -D__MICROLIB --apcs=interwork --split_sections \
-    -I myutil/inc \
-    -I C:/Keil_v5/ARM/RV31/INC \
-    -I C:/Keil_v5/ARM/CMSIS/Include \
-    -D__UVISION_VERSION="518"'
+cflags = '-I myutil/inc'
 
 env.Append(CCFLAGS=[Split(cflags)])
 

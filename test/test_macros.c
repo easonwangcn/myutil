@@ -96,8 +96,8 @@ TEST_CASE(args)
 
 TEST_SUITE(macros)
 {
-    TEST_RUN(align);
-    TEST_RUN(minmax);
-    TEST_RUN(cat);
-    TEST_RUN(args);
+    TEST_RUN_CASE(align);
+    TEST_RUN_CASE(minmax);
+    TEST_RUN_CASE(cat);
+    TEST_RUN_CASE(args);
 }

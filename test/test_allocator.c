@@ -1,6 +1,6 @@
 #include "myutil.h"
 
-#include <memory.h>
+#include <string.h>
 
 #define TEST_HEAP_SIZE 1000
 #define TEST_HEAP_SIZE_BOUNDARY 50
@@ -66,5 +66,5 @@ TEST_CASE(static_allocator)
 
 TEST_SUITE(allocator)
 {
-    TEST_RUN(static_allocator);
+    TEST_RUN_CASE(static_allocator);
 }

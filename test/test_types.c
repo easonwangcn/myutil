@@ -69,9 +69,9 @@ TEST_CASE(pointer)
 
 TEST_SUITE(types)
 {
-    TEST_RUN(boolean);
-    TEST_RUN(int);
-    TEST_RUN(uint);
-    TEST_RUN(float);
-    TEST_RUN(pointer);
+    TEST_RUN_CASE(boolean);
+    TEST_RUN_CASE(int);
+    TEST_RUN_CASE(uint);
+    TEST_RUN_CASE(float);
+    TEST_RUN_CASE(pointer);
 }

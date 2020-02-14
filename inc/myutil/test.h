@@ -180,9 +180,10 @@ int test_done(void);
 #define __MYUTIL_TEST_EXPECT(a, b, op, type) __MYUTIL_TEST_EXPECT_(((type)(a) op (type)(b)), a, b, op, type)
 #define __MYUTIL_TEST_EXPECT_S(a, b, op) __MYUTIL_TEST_EXPECT_((__myutil_test_compare_string((a), (b)) op 0), a, b, op, cstr_t)
 
-#define __MYUTIL_TEST_EXPECT_(condition, a, b, op, type) \
-    if (!__myutil_test_expect(condition)) \
-        __MYUTIL_TEST_LOG_ERROR_ASSERT_NAME(type)((type)(a), (type)(b), #a, #b, #op, __FILE__, __LINE__);
+#define __MYUTIL_TEST_EXPECT_(condition, a, b, op, type) do { \
+        if (!__myutil_test_expect(condition)) \
+            __MYUTIL_TEST_LOG_ERROR_ASSERT_NAME(type)((type)(a), (type)(b), #a, #b, #op, __FILE__, __LINE__); \
+    } while (0)
 
 /* Log expect error */
 #define __MYUTIL_TEST_LOG_ERROR_ASSERT_NAME(type) __myutil_test_log_error_##type

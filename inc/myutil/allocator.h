@@ -19,7 +19,7 @@
  * @file allocator.h
  * @author Eason Wang, talktoeason@gmail.com
  */
- 
+
 #ifndef __MYUTIL_ALLOCATOR_H__
 #define __MYUTIL_ALLOCATOR_H__
 

@@ -3,7 +3,7 @@
 #include <string.h>
 
 #define TEST_HEAP_SIZE 1000
-#define TEST_HEAP_SIZE_BOUNDARY 50
+#define TEST_HEAP_SIZE_BOUNDARY 64
 
 /** check if alllocate status OK */
 #define TEST_ALLOCATOR_STATUS() do { \
@@ -25,20 +25,23 @@
 /** check if any memory leak */
 #define TEST_LEAK() do { \
         for (i = 0; i < TEST_HEAP_SIZE_BOUNDARY; i++) \
-            EXPECT_EQ(buf[i], (byte)i); \
+            EXPECT_EQ(bufb[i], (byte)i); \
         for (i = TEST_HEAP_SIZE + TEST_HEAP_SIZE_BOUNDARY; i < TEST_HEAP_SIZE_BOUNDARY; i++) \
-            EXPECT_EQ(buf[i], (byte)i); \
+            EXPECT_EQ(bufb[i], (byte)i); \
     } while (false)
 
 TEST_CASE(static_allocator)
 {
     size_t size, i;
-    byte buf[TEST_HEAP_SIZE + 100];
+    
+    /* 4 bytes aligned. */
+    uint32_t buf[(TEST_HEAP_SIZE + TEST_HEAP_SIZE_BOUNDARY * 2) / 4 + 1];
+    byte *bufb = (byte *)buf;
     for (i = 0; i < TEST_HEAP_SIZE + TEST_HEAP_SIZE_BOUNDARY * 2; i++)
-        buf[i] = (byte)i;
+        bufb[i] = (byte)i;
 
     /* test allocate */
-    Allocator *alloc = StaticAllocator(TEST_HEAP_SIZE, buf + TEST_HEAP_SIZE_BOUNDARY);
+    Allocator *alloc = StaticAllocator(TEST_HEAP_SIZE, buf + TEST_HEAP_SIZE_BOUNDARY / 4);
     EXPECT_NOT_NULL(alloc);
 
     /* test capacity */

@@ -68,7 +68,9 @@ extern "C" {
     static void __MYUTIL_TEST_SUITE_ENTRY_IMPL_NAME(suite)(void)
 
 /** run test cases */
-#define TEST_RUN_CASE(...) ARG_LIST(__MYUTIL_TEST_RUN_CASE, __VA_ARGS__)
+#define TEST_RUN_CASE(...) do { \
+        ARG_LIST(__MYUTIL_TEST_RUN_CASE, __VA_ARGS__) \
+    } while(0)
 
 /** start a new test cases
  * 

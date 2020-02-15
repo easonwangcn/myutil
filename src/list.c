@@ -27,71 +27,31 @@
  * ------------------------------------------------------------------------ */
 
 /**
- * Init list iterator by list head.
- * 
- * @param self: the ListIter object to be init.
- * @param head: the head of list.
- */
-void ListIter_init(ListIter *self, List *head)
-{
-    self->node0 = self->node1 = head;
-}
-
-/**
- * check if iterator has next node.
- * 
- * @param self: the ListIter object pointer.
- * @return a booean, false for iterator reaches the end, otherwise true.
- */
-bool ListIter_hasNext(ListIter *self)
-{
-    return self->node0 != NULL && self->node0->next != NULL;
-}
-
-/**
  * Move iterator to next node.
  * 
  * @param self: the ListIter object pointer.
  */
 bool ListIter_next(ListIter *self)
 {
-    if (self->node0 == NULL)
+    if (self->current == NULL)
     {
         /* at the end */
         return false;
     }
     
-    if (self->node0 == self->node1)
+    if (self->current == self->prev)
     {
         /* initial status, move to first one */
-        self->node1 = NULL;
+        self->prev = NULL;
     }
     else
     {
         /* move to next node */
-        self->node1 = self->node0;
-        self->node0 = self->node0->next;
+        self->prev = self->current;
+        self->current = self->current->next;
     }
     
-    return self->node0 != NULL;
-}
-
-/**
- * Get current list node.
- * 
- * @param self: the ListIter object pointer.
- * 
- * @return a pointer to current list.
- */
-List *ListIter_current(ListIter *self)
-{
-    if (self->node0 == self->node1)
-    {
-        /* initial status, not started */
-        return NULL;
-    }
-
-    return self->node0;
+    return self->current != NULL;
 }
 
 /**
@@ -107,25 +67,26 @@ List *ListIter_current(ListIter *self)
  */
 List *ListIter_remove(ListIter *self, List **head)
 {
-    if (self->node0 == self->node1 || self->node0 == NULL)
+    if (self->current == NULL || 
+        (self->current == self->prev && !ListIter_next(self)))
     {
         /* initial status or end */
         return NULL;
     }
 
-    List *node = self->node0;
-    if (self->node1 == NULL)
+    List *node = self->current;
+    if (self->prev == NULL)
     {
         /* head status */
-        self->node0 = node->next;   /* move iterator node */
+        self->current = node->next;   /* move iterator node */
         if (head != NULL)
             *head = node->next;         /* update head */
     }
     else
     {
         /* normal status */
-        self->node1->next = node->next;  /* delete next node */
-        self->node0 = node->next;       /* restore initial status */
+        self->prev->next = node->next;  /* delete next node */
+        self->current = node->next;       /* restore initial status */
     }
     
     return node;
@@ -145,16 +106,16 @@ List *ListIter_remove(ListIter *self, List **head)
  */
 List *ListIter_insert(ListIter *self, List *node, List **head)
 {
-    if (self->node0 == self->node1)
+    if (self->current == self->prev && !ListIter_next(self))
     {
         /* initial status */
         return NULL;
     }
 
-    /* link node before node0, */
-    node->next = self->node0;
+    /* link node before current, */
+    node->next = self->current;
 
-    if (self->node1 == NULL)
+    if (self->prev == NULL)
     {
         /* head */
         if (head != NULL)
@@ -163,77 +124,9 @@ List *ListIter_insert(ListIter *self, List *node, List **head)
     else
     {
         /* normal or end */
-        self->node1->next = node;
+        self->prev->next = node;
     }
-    self->node0 = node;
+    self->current = node;
 
     return node;
 }
-
-/* ---------------------------------------------------------------------------
- *  DoubleListIter implements
- * ------------------------------------------------------------------------ */
-
-/**
- * Init list iterator by double list head.
- * 
- * @param self: the ListIter object to be init.
- * @param head: the head of double list.
- */
-void DoubleListIter_init(ListIter *self, DoubleList *head)
-{
-
-}
-
-/**
- * Move iterator to next node.
- * 
- * @param self: the ListIter object pointer.
- */
-void DoubleListIter_next(ListIter *self)
-{
-
-}
-
-/**
- * Get current double list node.
- * 
- * @param self: the ListIter object pointer.
- * 
- * @return a pointer to current double list.
- */
-List *DoubleListIter_current(ListIter *self)
-{
-    return NULL;
-}
-
-/**
- * Remove current item from double list.
- * 
- * @param self: the ListIter object pointer.
- * @param head: the head pointer which be may updated after removal. 
- *      Or NULL if don't care.
- * 
- * @return a pointer to removed node.
- */
-DoubleList *DoubleListIter_remove(ListIter *self, DoubleList **head)
-{
-    return NULL;
-}
-
-/**
- * Insert new node to current position of double list.
- * 
- * @param self: the ListIter object pointer.
- * @param node: the node to be insert.
- * @param head: the head pointer which be may updated after removal. 
- *      Or NULL if don't care.
- * 
- * @return a pointer to removed node, or NULL if failed.
- */
-List *DoubleListIter_insert(ListIter *self, DoubleList *node, DoubleList **head)
-{
-    return NULL;
-}
-
-

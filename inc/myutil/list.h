@@ -16,7 +16,7 @@
  */
 
 /**
- * @file allocator.h
+ * @file list.h
  * @author Eason Wang, talktoeason@gmail.com
  */
 
@@ -46,24 +46,6 @@ typedef struct _List
 } List;
 
 /* ---------------------------------------------------------------------------
- *  DoubleList interface
- * ------------------------------------------------------------------------ */
-
-/**
- * Class DoubleList.
- * 
- * A double chain list node.
- */
-typedef struct _DoubleList
-{
-    union {
-        List super;                 /**< super list class */
-        struct _DoubleList *next;   /**< next node pointer */
-    };
-    struct _DoubleList *prev;       /**< prev node pointer */
-} DoubleList;
-
-/* ---------------------------------------------------------------------------
  *  ListIter interface
  * ------------------------------------------------------------------------ */
 
@@ -74,8 +56,8 @@ typedef struct _DoubleList
  */
 typedef struct _ListIter
 {
-    List *node0;
-    List *node1;
+    List *current;
+    List *prev;
 } ListIter;
 
 /**
@@ -84,7 +66,10 @@ typedef struct _ListIter
  * @param self: the ListIter object to be init.
  * @param head: the head of list.
  */
-void ListIter_init(ListIter *self, List *head);
+static inline void ListIter_init(ListIter *self, List *head)
+{
+    self->current = self->prev = head;
+};
 
 /**
  * New list iterator by list head.
@@ -98,7 +83,7 @@ static inline ListIter ListIter_new(List *head)
     ListIter iter;
     ListIter_init(&iter, head);
     return iter;
-}
+};
 
 /**
  * check if iterator has next node.
@@ -106,7 +91,10 @@ static inline ListIter ListIter_new(List *head)
  * @param self: the ListIter object pointer.
  * @return a booean, false for iterator reaches the end, otherwise true.
  */
-bool ListIter_hasNext(ListIter *self);
+static inline bool ListIter_hasNext(ListIter *self)
+{
+    return self->current != NULL && self->current->next != NULL;
+};
 
 /**
  * Move iterator to next node.
@@ -123,7 +111,10 @@ bool ListIter_next(ListIter *self);
  * 
  * @return a pointer to current list.
  */
-List *ListIter_current(ListIter *self);
+static inline List *ListIter_current(ListIter *self)
+{
+    return self->current;
+};
 
 /**
  * Remove current item from list.
@@ -147,71 +138,6 @@ List *ListIter_remove(ListIter *self, List **head);
  * @return a pointer to removed node, or NULL if failed.
  */
 List *ListIter_insert(ListIter *self, List *node, List **head);
-
-/* ---------------------------------------------------------------------------
- *  DoubleListIter interface
- * ------------------------------------------------------------------------ */
-
-/**
- * Init list iterator by double list head.
- * 
- * @param self: the ListIter object to be init.
- * @param head: the head of double list.
- */
-void DoubleListIter_init(ListIter *self, DoubleList *head);
-
-/**
- * New double list iterator by list head.
- * 
- * @param head: the head of list.
- * 
- * @return a ListIter object start with head.
- */
-static inline ListIter DoubleListIter_new(DoubleList *head)
-{
-    ListIter iter;
-    DoubleListIter_init(&iter, head);
-    return iter;
-}
-
-/**
- * Move iterator to next node.
- * 
- * @param self: the ListIter object pointer.
- */
-void DoubleListIter_next(ListIter *self);
-
-/**
- * Get current double list node.
- * 
- * @param self: the ListIter object pointer.
- * 
- * @return a pointer to current double list.
- */
-List *DoubleListIter_current(ListIter *self);
-
-/**
- * Remove current item from double list.
- * 
- * @param self: the ListIter object pointer.
- * @param head: the head pointer which be may updated after removal. 
- *      Or NULL if don't care.
- * 
- * @return a pointer to removed node.
- */
-DoubleList *DoubleListIter_remove(ListIter *self, DoubleList **head);
-
-/**
- * Insert new node to current position of double list.
- * 
- * @param self: the ListIter object pointer.
- * @param node: the node to be insert.
- * @param head: the head pointer which be may updated after removal. 
- *      Or NULL if don't care.
- * 
- * @return a pointer to removed node, or NULL if failed.
- */
-List *DoubleListIter_insert(ListIter *self, DoubleList *node, DoubleList **head);
 
 #ifdef __cplusplus
 } /* extern "C" */

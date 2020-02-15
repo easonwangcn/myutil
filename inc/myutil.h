@@ -29,6 +29,7 @@
 #include "myutil/log.h"
 #include "myutil/allocator.h"
 #include "myutil/list.h"
+#include "myutil/double_list.h"
 
 #include "myutil/test.h"
 

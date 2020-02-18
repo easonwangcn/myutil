@@ -5,9 +5,9 @@ typedef struct _IntList
 {
     List super;
     int i;
-} IntList;
+} IntList, *IntListRef;
 
-static void initList(IntList *il, size_t size)
+static void initList(IntListRef il, size_t size)
 {
     size_t i;
     for (i = 0; i < size; i++)
@@ -17,7 +17,7 @@ static void initList(IntList *il, size_t size)
     il[size - 1].super.next = NULL;
 }
 
-static void printList(List *head)
+static void printList(ListRef head)
 {
     ListIter it = ListIter_new(head);
     LOGI("--------");
@@ -25,13 +25,13 @@ static void printList(List *head)
         LOGI("%d", ListIter_curObj(it, IntList)->i);
 }
 
-static void verifyList(List *head)
+static void verifyList(ListRef head)
 {
     printList(head);
     
     ListIter it = ListIter_new(head);
     size_t i = 0;
-    IntList *current;
+    IntListRef current;
     while(ListIter_next(&it))
     {
         current = ListIter_curObj(it, IntList);
@@ -61,8 +61,8 @@ TEST_CASE(insert_head)
     verifyList(&il[0].super);
 
     /* start from seconds half */
-    List *node;
-    List *head = &il[TEST_LIST_BATCH0 / 2].super;
+    ListRef node;
+    ListRef head = &il[TEST_LIST_BATCH0 / 2].super;
     ListIter it;
     ListIter_init(&it, head);
     
@@ -86,8 +86,8 @@ TEST_CASE(insert_middle)
     verifyList(&il[0].super);
 
     /* start from seconds half */
-    List *node;
-    List *head = &il[TEST_LIST_BATCH1 / 2].super;
+    ListRef node;
+    ListRef head = &il[TEST_LIST_BATCH1 / 2].super;
     
     /* insert first half */
     ListIter it;
@@ -112,8 +112,8 @@ TEST_CASE(insert_tail)
     verifyList(&il[0].super);
 
     /* cut seconds half */
-    List *node;
-    List *head = &il[0].super;
+    ListRef node;
+    ListRef head = &il[0].super;
     il[TEST_LIST_BATCH0 / 2].super.next = NULL;
     
     /* insert first half */
@@ -143,8 +143,8 @@ TEST_CASE(remove_head)
     initList(il, TEST_LIST_BATCH0);
     verifyList(&il[0].super);
     
-    List *head = &il[0].super;
-    List *node;
+    ListRef head = &il[0].super;
+    ListRef node;
     
     /* insert first half */
     ListIter it;
@@ -178,8 +178,8 @@ TEST_CASE(remove_middle)
     initList(il, TEST_LIST_BATCH1);
     verifyList(&il[0].super);
     
-    List *head = &il[0].super;
-    List *node;
+    ListRef head = &il[0].super;
+    ListRef node;
     
     /* move to first */
     ListIter it;
@@ -217,8 +217,8 @@ TEST_CASE(remove_tail)
     initList(il, TEST_LIST_BATCH0);
     verifyList(&il[0].super);
     
-    List *head = &il[0].super;
-    List *node;
+    ListRef head = &il[0].super;
+    ListRef node;
     
     /* move to first */
     ListIter it;
@@ -256,7 +256,7 @@ TEST_CASE(remove_all)
     initList(il, TEST_LIST_BATCH0);
     verifyList(&il[0].super);
     
-    List *head = &il[0].super;
+    ListRef head = &il[0].super;
     
     /* move to first */
     ListIter it;

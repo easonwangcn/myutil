@@ -43,7 +43,7 @@ extern "C" {
 typedef struct _List
 {
     struct _List *next;   /**< next node pointer */
-} List;
+} List, *ListRef;
 
 /* ---------------------------------------------------------------------------
  *  ListIter interface
@@ -56,9 +56,9 @@ typedef struct _List
  */
 typedef struct _ListIter
 {
-    List *current;
-    List *prev;
-} ListIter;
+    ListRef current;
+    ListRef prev;
+} ListIter, *ListIterRef;
 
 /**
  * Init list iterator by list head.
@@ -66,7 +66,7 @@ typedef struct _ListIter
  * @param self: the ListIter object to be init.
  * @param head: the head of list.
  */
-static inline void ListIter_init(ListIter *self, List *head)
+static inline void ListIter_init(ListIterRef self, ListRef head)
 {
     self->current = self->prev = head;
 };
@@ -78,7 +78,7 @@ static inline void ListIter_init(ListIter *self, List *head)
  * 
  * @return a ListIter object start with head.
  */
-static inline ListIter ListIter_new(List *head)
+static inline ListIter ListIter_new(ListRef head)
 {
     ListIter iter;
     ListIter_init(&iter, head);
@@ -91,7 +91,7 @@ static inline ListIter ListIter_new(List *head)
  * @param self: the ListIter object pointer.
  * @return a booean, false for iterator reaches the end, otherwise true.
  */
-static inline bool ListIter_hasNext(ListIter *self)
+static inline bool ListIter_hasNext(ListIterRef self)
 {
     return self->current != NULL && self->current->next != NULL;
 };
@@ -102,7 +102,7 @@ static inline bool ListIter_hasNext(ListIter *self)
  * @param self: the ListIter object pointer.
  * @return a booean, false for iterator reaches the end, otherwise true.
  */
-bool ListIter_next(ListIter *self);
+bool ListIter_next(ListIterRef self);
 
 /**
  * Get current list node.
@@ -111,7 +111,7 @@ bool ListIter_next(ListIter *self);
  * 
  * @return a pointer to current list.
  */
-static inline List *ListIter_current(ListIter *self)
+static inline ListRef ListIter_current(ListIterRef self)
 {
     return self->current;
 };
@@ -128,7 +128,7 @@ static inline List *ListIter_current(ListIter *self)
  * 
  * @return a pointer to removed node.
  */
-List *ListIter_remove(ListIter *self, List **head);
+ListRef ListIter_remove(ListIterRef self, ListRef *head);
 
 /**
  * Insert new node to current position.
@@ -140,7 +140,7 @@ List *ListIter_remove(ListIter *self, List **head);
  * 
  * @return a pointer to removed node, or NULL if failed.
  */
-List *ListIter_insert(ListIter *self, List *node, List **head);
+ListRef ListIter_insert(ListIterRef self, ListRef node, ListRef *head);
 
 #ifdef __cplusplus
 } /* extern "C" */

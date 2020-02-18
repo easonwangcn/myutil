@@ -44,7 +44,7 @@ typedef struct _DbList
 {
     struct _DbList *next;   /**< next node pointer */
     struct _DbList *prev;       /**< prev node pointer */
-} DbList;
+} DbList, *DbListRef;
 
 /**
  * Init list iterator by list head.
@@ -52,7 +52,7 @@ typedef struct _DbList
  * @param self: the ListIter object to be init.
  * @param head: the head of list.
  */
-static inline void DbList_init(DbList *self)
+static inline void DbList_init(DbListRef self)
 {
     self->next = self;
     self->prev = self;
@@ -69,9 +69,9 @@ static inline void DbList_init(DbList *self)
  */
 typedef struct _DbListIter
 {
-    DbList *current;
-    DbList *head;
-} DbListIter;
+    DbListRef current;
+    DbListRef head;
+} DbListIter, *DbListIterRef;
 
 /**
  * Init list iterator by double list head.
@@ -79,7 +79,7 @@ typedef struct _DbListIter
  * @param self: the ListIter object to be init.
  * @param head: the head of double list.
  */
-static inline void DbListIter_init(DbListIter *self, DbList *head)
+static inline void DbListIter_init(DbListIterRef self, DbListRef head)
 {
     self->current = head;
     self->head = NULL;
@@ -92,7 +92,7 @@ static inline void DbListIter_init(DbListIter *self, DbList *head)
  * 
  * @return a ListIter object start with head.
  */
-static inline DbListIter DbListIter_new(DbList *head)
+static inline DbListIter DbListIter_new(DbListRef head)
 {
     DbListIter iter;
     DbListIter_init(&iter, head);
@@ -105,7 +105,7 @@ static inline DbListIter DbListIter_new(DbList *head)
  * @param self: the ListIter object pointer.
  * @return a booean, false for iterator reaches the head, otherwise true.
  */
-static inline bool DbListIter_hasPrev(DbListIter *self)
+static inline bool DbListIter_hasPrev(DbListIterRef self)
 {
     return self->current != NULL && self->current != self->head;
 };
@@ -116,7 +116,7 @@ static inline bool DbListIter_hasPrev(DbListIter *self)
  * @param self: the ListIter object pointer.
  * @return a booean, false for iterator reaches the end, otherwise true.
  */
-static inline bool DbListIter_hasNext(DbListIter *self)
+static inline bool DbListIter_hasNext(DbListIterRef self)
 {
     return self->current != NULL && self->current->next != self->head;
 };
@@ -128,7 +128,7 @@ static inline bool DbListIter_hasNext(DbListIter *self)
  * 
  * @return a pointer to current double list.
  */
-static inline DbList *DbListIter_current(DbListIter *self)
+static inline DbListRef DbListIter_current(DbListIterRef self)
 {
     return self->current;
 };
@@ -143,7 +143,7 @@ static inline DbList *DbListIter_current(DbListIter *self)
  * 
  * @return a pointer to double list's head node.
  */
-static inline DbList *DbListIter_head(DbListIter *self)
+static inline DbListRef DbListIter_head(DbListIterRef self)
 {
     return self->head == NULL? self->current: self->head;
 };
@@ -157,7 +157,7 @@ static inline DbList *DbListIter_head(DbListIter *self)
  * @param self: the ListIter object pointer.
  * @return a booean, false for iterator reaches the end, otherwise true.
  */
-bool DbListIter_next(DbListIter *self);
+bool DbListIter_next(DbListIterRef self);
 
 /**
  * Move iterator to previouse node.
@@ -165,7 +165,7 @@ bool DbListIter_next(DbListIter *self);
  * @param self: the ListIter object pointer.
  * @return a booean, false for iterator reaches the head, otherwise true.
  */
-bool DbListIter_prev(DbListIter *self);
+bool DbListIter_prev(DbListIterRef self);
 
 /**
  * Remove current item from double list.
@@ -176,7 +176,7 @@ bool DbListIter_prev(DbListIter *self);
  * 
  * @return a pointer to removed node.
  */
-DbList *DbListIter_remove(DbListIter *self, DbList **head);
+DbListRef DbListIter_remove(DbListIterRef self, DbListRef *head);
 
 /**
  * Insert new node to current position of double list.
@@ -188,7 +188,7 @@ DbList *DbListIter_remove(DbListIter *self, DbList **head);
  * 
  * @return a pointer to removed node, or NULL if failed.
  */
-DbList *DbListIter_insert(DbListIter *self, DbList *node, DbList **head);
+DbListRef DbListIter_insert(DbListIterRef self, DbListRef node, DbListRef *head);
 
 #ifdef __cplusplus
 } /* extern "C" */

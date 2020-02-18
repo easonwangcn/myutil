@@ -41,7 +41,7 @@ TEST_CASE(static_allocator)
         bufb[i] = (byte)i;
 
     /* test allocate */
-    Allocator *alloc = StaticAllocator(TEST_HEAP_SIZE, buf + TEST_HEAP_SIZE_BOUNDARY / 4);
+    AllocatorRef alloc = StaticAllocator(TEST_HEAP_SIZE, buf + TEST_HEAP_SIZE_BOUNDARY / 4);
     EXPECT_NOT_NULL(alloc);
 
     /* test capacity */

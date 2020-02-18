@@ -55,7 +55,7 @@ typedef struct _Allocator
 {
     Allocator_vt const *vt;  /**< virtual table. */
 
-} Allocator;
+} Allocator, *AllocatorRef;
 
 /**
  * Allocate memory from allocator.
@@ -65,7 +65,7 @@ typedef struct _Allocator
  * 
  * @return the allocated memory pointer, or NULL if failed.
  */
-static inline void *Allocator_alloc(Allocator *self, size_t size)
+static inline void *Allocator_alloc(AllocatorRef self, size_t size)
 {
     return self->vt->alloc(self, size);
 };
@@ -83,7 +83,7 @@ static inline void *Allocator_alloc(Allocator *self, size_t size)
  * @param self: the allocator.
  * @param p: the memory pointer to be free.
  */
-static inline void Allocator_free(Allocator *self, void *p)
+static inline void Allocator_free(AllocatorRef self, void *p)
 {
     self->vt->free(self, p);
 };
@@ -94,7 +94,7 @@ static inline void Allocator_free(Allocator *self, void *p)
  * @param self: the allocator.
  * @return the capacity of allocator.
  */
-static inline size_t Allocator_capacity(Allocator *self)
+static inline size_t Allocator_capacity(AllocatorRef self)
 {
     return self->vt->capacity(self);
 };
@@ -105,7 +105,7 @@ static inline size_t Allocator_capacity(Allocator *self)
  * @param self: the allocator.
  * @return the remain memory size of allocator.
  */
-static inline size_t Allocator_available(Allocator *self)
+static inline size_t Allocator_available(AllocatorRef self)
 {
     return self->vt->available(self);
 };
@@ -124,7 +124,7 @@ static inline size_t Allocator_available(Allocator *self)
  * 
  * @return the handler to allocator.
  */
-Allocator *StaticAllocator(size_t size, void *buf);
+AllocatorRef StaticAllocator(size_t size, void *buf);
 
 
 #ifdef __cplusplus

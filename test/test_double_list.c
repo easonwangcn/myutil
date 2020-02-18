@@ -7,9 +7,9 @@ typedef struct _DbIntList
 {
     DbList super;
     int i;
-} IntDbList;
+} IntDbList, *IntDbListRef;
 
-static void initNode(IntDbList *il, size_t size)
+static void initNode(IntDbListRef il, size_t size)
 {
     int i;
     memset(il, size * sizeof(IntDbList), 0);
@@ -19,7 +19,7 @@ static void initNode(IntDbList *il, size_t size)
     }
 }
 
-static void initList(IntDbList *il, size_t size)
+static void initList(IntDbListRef il, size_t size)
 {
     int i;
     for (i = 0; i < size; i++)
@@ -32,7 +32,7 @@ static void initList(IntDbList *il, size_t size)
         DbListIter_insert(&it, &il[i].super, NULL);
 }
 
-static void printList(IntDbList *head)
+static void printList(IntDbListRef head)
 {
     DbListIter it = DbListIter_new(&head->super);
     LOGI("--------");
@@ -40,17 +40,17 @@ static void printList(IntDbList *head)
         LOGI("%d", DbListIter_curObj(it, IntDbList)->i);
 }
 
-static void verifyList(IntDbList *head)
+static void verifyList(IntDbListRef head)
 {
     printList(head);
     
     DbListIter it = DbListIter_new(&head->super);
-    DbList *headList = DbListIter_head(&it);
+    DbListRef headList = DbListIter_head(&it);
     EXPECT_EQ(headList, &head->super);
     
     int i = 0;
 
-    IntDbList *current;
+    IntDbListRef current;
     while(DbListIter_next(&it))
     {
         current = DbListIter_curObj(it, IntDbList);
@@ -85,7 +85,7 @@ TEST_CASE(travel)
 TEST_CASE(insert)
 {
     int i;
-    DbList *head, *current;
+    DbListRef head, current;
     DbListIter it;
     IntDbList il[TEST_LIST_BATCH1];  
     
@@ -127,7 +127,7 @@ TEST_CASE(insert)
 TEST_CASE(remove_all)
 {
     IntDbList il[TEST_LIST_BATCH1];
-    DbList *head = &il[0].super, *current;
+    DbListRef head = &il[0].super, current;
     DbListIter it;
     int i;
     
@@ -157,7 +157,7 @@ TEST_CASE(remove_all)
 TEST_CASE(remove_middle)
 {
     IntDbList il[TEST_LIST_BATCH0];
-    DbList *head = &il[0].super, *current;
+    DbListRef head = &il[0].super, current;
     DbListIter it;
     int i;
     

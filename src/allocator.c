@@ -22,9 +22,9 @@
 
 #include "myutil.h"
 
-static void *__myutil_allocator_StaticAllocator_alloc(Allocator *self, size_t size);
-static size_t __myutil_allocator_StaticAllocator_capacity(Allocator *self);
-static size_t __myutil_allocator_StaticAllocator_available(Allocator *self);
+static void *__myutil_allocator_StaticAllocator_alloc(AllocatorRef self, size_t size);
+static size_t __myutil_allocator_StaticAllocator_capacity(AllocatorRef self);
+static size_t __myutil_allocator_StaticAllocator_available(AllocatorRef self);
 
 static Allocator_vt const __staticAllocator_vt = {
     .alloc = __myutil_allocator_StaticAllocator_alloc,
@@ -58,7 +58,7 @@ typedef struct _StaticAllocatorBlock
  * 
  * @return the handler to allocator.
  */
-Allocator *StaticAllocator(size_t size, void *buf)
+AllocatorRef StaticAllocator(size_t size, void *buf)
 {
     /* Too small buffer. */
     if (size <= sizeof(StaticAllocatorClass))
@@ -76,7 +76,7 @@ Allocator *StaticAllocator(size_t size, void *buf)
     return &_self->super;
 }
 
-static void *__myutil_allocator_StaticAllocator_alloc(Allocator *self, size_t size)
+static void *__myutil_allocator_StaticAllocator_alloc(AllocatorRef self, size_t size)
 {
     StaticAllocatorClass *self_ = DOWN_CAST(self, StaticAllocatorClass);
     
@@ -95,13 +95,13 @@ static void *__myutil_allocator_StaticAllocator_alloc(Allocator *self, size_t si
     return ptr;
 }
 
-static size_t __myutil_allocator_StaticAllocator_capacity(Allocator *self)
+static size_t __myutil_allocator_StaticAllocator_capacity(AllocatorRef self)
 {
     StaticAllocatorClass *self_ = DOWN_CAST(self, StaticAllocatorClass);
     return self_->capacity;
 }
 
-static size_t __myutil_allocator_StaticAllocator_available(Allocator *self)
+static size_t __myutil_allocator_StaticAllocator_available(AllocatorRef self)
 {
     StaticAllocatorClass *self_ = DOWN_CAST(self, StaticAllocatorClass);
     return self_->capacity - self_->used;

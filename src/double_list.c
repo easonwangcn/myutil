@@ -102,8 +102,7 @@ DbList *DbListIter_remove(DbListIter *self, DbList **head)
     }
 
     /* remove node from list. */
-    node->prev->next = node->next;
-    node->next->prev = node->prev;
+    DbList_remove(node);
 
     /* move iter to next. */
     self->current = node->next;
@@ -141,13 +140,10 @@ DbList *DbListIter_insert(DbListIter *self, DbList *node, DbList **head)
     }
 
     DbList *current = self->current;
-    DbList *prev = current->prev;
 
     /* link node to double list. */
-    prev->next = node;
-    node->prev = prev;
-    node->next = current;
-    current->prev = node;
+    
+    DbList_insert(node, current);
     
     if (self->head == current)
     {

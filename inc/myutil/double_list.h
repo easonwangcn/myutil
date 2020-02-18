@@ -58,6 +58,31 @@ static inline void DbList_init(DbListRef self)
     self->prev = self;
 };
 
+/**
+ * Remove double list node from list.
+ * 
+ * @param self: the ListIter object to be remove.
+ */
+static inline void DbList_remove(DbListRef self)
+{
+    self->next->prev = self->prev;
+    self->prev->next = self->next;
+    self->next = self->prev = NULL;
+};
+
+/**
+ * Insert double list node before target.
+ * 
+ * @param self: the ListIter object to be insert.
+ * @param target: the node after self.
+ */
+static inline void DbList_insert(DbListRef self, DbListRef target)
+{
+    self->next = target;
+    self->prev = target->prev;
+    target->prev = target->prev->next = self;
+};
+
 /* ---------------------------------------------------------------------------
  *  DbListIter interface
  * ------------------------------------------------------------------------ */

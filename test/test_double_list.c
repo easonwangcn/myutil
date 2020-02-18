@@ -37,7 +37,7 @@ static void printList(IntDbList *head)
     DbListIter it = DbListIter_new(&head->super);
     LOGI("--------");
     while(DbListIter_next(&it))
-        LOGI("%d", ((IntDbList *)(DbListIter_current(&it)))->i);
+        LOGI("%d", DbListIter_curObj(it, IntDbList)->i);
 }
 
 static void verifyList(IntDbList *head)
@@ -53,7 +53,7 @@ static void verifyList(IntDbList *head)
     IntDbList *current;
     while(DbListIter_next(&it))
     {
-        current = (IntDbList *)(DbListIter_current(&it));
+        current = DbListIter_curObj(it, IntDbList);
         EXPECT_EQ(current->i, i);
         i++;
     }
@@ -62,7 +62,7 @@ static void verifyList(IntDbList *head)
     i = -1;
     while(DbListIter_prev(&it))
     {
-        current = (IntDbList *)(DbListIter_current(&it));
+        current = DbListIter_curObj(it, IntDbList);
         if (i != -1)
             EXPECT_EQ(current->i, i);
         i = current->i - 1;
@@ -192,10 +192,4 @@ TEST_SUITE(double_list)
     TEST_RUN_CASE(insert);
     TEST_RUN_CASE(remove_middle);
     TEST_RUN_CASE(remove_all);
-    // TEST_RUN_CASE(insert_head);
-    // TEST_RUN_CASE(insert_middle);
-    // TEST_RUN_CASE(insert_tail);
-    // TEST_RUN_CASE(remove_head);
-    // TEST_RUN_CASE(remove_middle);
-    // TEST_RUN_CASE(remove_tail);
 }

@@ -22,7 +22,7 @@ static void printList(List *head)
     ListIter it = ListIter_new(head);
     LOGI("--------");
     while(ListIter_next(&it))
-        LOGI("%d", ((IntList *)(ListIter_current(&it)))->i);
+        LOGI("%d", ListIter_curObj(it, IntList)->i);
 }
 
 static void verifyList(List *head)
@@ -34,7 +34,7 @@ static void verifyList(List *head)
     IntList *current;
     while(ListIter_next(&it))
     {
-        current = (IntList *)(ListIter_current(&it));
+        current = ListIter_curObj(it, IntList);
         EXPECT_EQ(current->i, i);
         i++;
     }

@@ -91,7 +91,7 @@ DbList *DbListIter_remove(DbListIter *self, DbList **head)
         return NULL;
     }
 
-    DbList *node = (DbList *)self->current;
+    DbList *node = self->current;
     if (node->next == node)
     {
         /* the only one. */

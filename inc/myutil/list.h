@@ -116,6 +116,9 @@ static inline List *ListIter_current(ListIter *self)
     return self->current;
 };
 
+/** fast down cast helper to get current object */
+#define ListIter_curObj(iter, type) (DOWN_CAST(ListIter_current(&iter), type))
+
 /**
  * Remove current item from list.
  * 

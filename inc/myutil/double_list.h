@@ -133,6 +133,9 @@ static inline DbList *DbListIter_current(DbListIter *self)
     return self->current;
 };
 
+/** fast down cast helper to get current object */
+#define DbListIter_curObj(iter, type) (DOWN_CAST(DbListIter_current(&iter), type))
+
 /**
  * Get double list's head node.
  * 
@@ -144,6 +147,9 @@ static inline DbList *DbListIter_head(DbListIter *self)
 {
     return self->head == NULL? self->current: self->head;
 };
+
+/** fast down cast helper to get header object */
+#define DbListIter_headObj(iter, type) (DOWN_CAST(DbListIter_head(&iter), type))
 
 /**
  * Move iterator to next node.

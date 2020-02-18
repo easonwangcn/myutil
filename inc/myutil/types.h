@@ -49,11 +49,17 @@ typedef void *ptr_t;        /**< pointer */
  *  Class
  * ------------------------------------------------------------------------ */
 
-/** down cast object from super */
-#define DOWN_CAST(obj, type) DOWN_CAST_FROM(obj, type, super)
+/** down cast object pointer from super */
+#define DOWN_CAST(ptr, type) DOWN_CAST_FROM(ptr, type, super)
 
-/** down cast object from super type */
-#define DOWN_CAST_FROM(obj, type, field) ((type *)((uint8_t *)obj - (size_t)&(((type *)0)->field)))
+/** down cast object pointer from super type */
+#define DOWN_CAST_FROM(ptr, type, field) ((type *)((uint8_t *)ptr - (size_t)&(((type *)0)->field)))
+
+/** up cast object pointer to super */
+#define UP_CAST(obj, type) ((type *)(&obj->super))
+
+/** up cast object to super */
+#define UP_CAST_OBJ(ptr, type) ((type *)(&ptr.super))
 
 #ifdef __cplusplus
 } /* extern "C" */

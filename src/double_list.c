@@ -101,11 +101,11 @@ DbList *DbListIter_remove(DbListIter *self, DbList **head)
         return node;
     }
 
-    /* remove node from list. */
-    DbList_remove(node);
-
     /* move iter to next. */
     self->current = node->next;
+    
+    /* remove node from list. */
+    DbList_remove(node);
 
     if (self->head == node)
     {

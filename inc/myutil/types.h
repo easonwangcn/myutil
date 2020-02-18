@@ -42,7 +42,7 @@ typedef double float64_t;   /**< 64 bits float type */
 
 typedef char const *cstr_t; /**< const string pointer */
 
-typedef void *ptr_t;        /**< pointer */
+typedef void *ref_t;        /**< pointer */
 #define null NULL           /**< null pointer constant */
 
 /* ---------------------------------------------------------------------------

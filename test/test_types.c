@@ -59,8 +59,8 @@ TEST_CASE(float)
 
 TEST_CASE(pointer)
 {
-    EXPECT_EQ(sizeof(ptr_t), sizeof(NULL));
-    EXPECT_EQ(sizeof(ptr_t), sizeof(void *));
+    EXPECT_EQ(sizeof(ref_t), sizeof(NULL));
+    EXPECT_EQ(sizeof(ref_t), sizeof(void *));
     EXPECT_EQ(sizeof(cstr_t), sizeof(NULL));
     EXPECT_EQ(sizeof(cstr_t), sizeof(void *));
     EXPECT_NULL(NULL);

@@ -83,6 +83,30 @@ static inline void DbList_insert(DbListRef self, DbListRef target)
     target->prev = target->prev->next = self;
 };
 
+/**
+ * Remove double list node from list, update head if needed.
+ * 
+ * @param self: the ListIter object to be remove.
+ * @param head: the pointer to head, should not be NULL.
+ */
+void DbList_removeFrom(DbListRef self, DbListRef *head);
+
+/**
+ * Add double list node to list tail.
+ * 
+ * @param self: the ListIter object to be insert.
+ * @param head: the pointer to head, should not be NULL.
+ */
+void DbList_addToTail(DbListRef self, DbListRef *head);
+
+/**
+ * Add double list node to list head.
+ * 
+ * @param self: the ListIter object to be insert.
+ * @param head: the pointer to head, should not be NULL.
+ */
+void DbList_addToHead(DbListRef self, DbListRef *head);
+
 /* ---------------------------------------------------------------------------
  *  DbListIter interface
  * ------------------------------------------------------------------------ */

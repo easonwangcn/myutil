@@ -23,6 +23,67 @@
 #include "myutil.h"
 
 /**
+ * Remove double list node from list, update head if needed.
+ * 
+ * @param self: the ListIter object to be remove.
+ * @param head: the pointer to head, should not be NULL.
+ */
+void DbList_removeFrom(DbListRef self, DbListRef *head)
+{
+    if (self->next == self)
+    {
+        *head = NULL;
+    }
+    else
+    {
+        self->next->prev = self->prev;
+        self->prev->next = self->next;
+        if (*head == self)
+            *head = self->next;
+    }
+
+    self->next = self->prev = NULL;
+};
+
+/**
+ * Add double list node to list tail.
+ * 
+ * @param self: the ListIter object to be insert.
+ * @param target: the node after self.
+ */
+static inline void DbList_addToTail(DbListRef self, DbListRef *head)
+{
+    if (*head == NULL)
+    {
+        DbList_init(self);
+        *head = self;
+    }
+    else
+    {
+        DbList_insert(self, *head);
+    }
+}
+
+/**
+ * Add double list node to list tail.
+ * 
+ * @param self: the ListIter object to be insert.
+ * @param target: the node after self.
+ */
+static inline void DbList_addToHead(DbListRef self, DbListRef *head)
+{
+    if (*head == NULL)
+    {
+        DbList_init(self);
+    }
+    else
+    {
+        DbList_insert(self, *head);
+    }
+    *head = self;
+}
+
+/**
  * Move iterator to next node.
  * 
  * @param self: the ListIter object pointer.

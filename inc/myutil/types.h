@@ -45,6 +45,24 @@ typedef char const *cstr_t; /**< const string pointer */
 typedef void *ref_t;        /**< pointer */
 #define null NULL           /**< null pointer constant */
 
+typedef uint32_t color_t;
+
+
+/* ---------------------------------------------------------------------------
+ *  Color
+ * ------------------------------------------------------------------------ */
+
+/** test if 2 color is equals */
+typedef uint32_t color_t;
+
+#define COLOR(r, g, b) (((r) << 16) | ((g) << 8) | (b))
+#define COLORA(a, r, g, b) (((a) << 24) | ((r) << 16) | ((g) << 8) | (b))
+
+#define ALPHA(color) (((color) >> 24) & 0xFF)
+#define RED(color) (((color) >> 16) & 0xFF)
+#define GREEN(color) (((color) >> 8) & 0xFF)
+#define BLUE(color) ((color) & 0xFF)
+
 /* ---------------------------------------------------------------------------
  *  Class
  * ------------------------------------------------------------------------ */
